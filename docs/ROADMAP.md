@@ -59,6 +59,18 @@ Strategic milestones for pdfsuite as we transition from the v0.1.0 baseline into
 2. Stand up GitHub Project board + pytest scaffolding; integrate doc lint + smoke workflow in CI (v0.3.0 gate).
 3. Begin PySide6 skeleton + GUI doc updates once CI foundations are stable (pre-v0.4.0).
 
+## Future work / v1.x+ backlog
+
+v1.0 delivers Acrobat-grade parity with a stable GUI, CI, and distribution pipeline. Subsequent releases will focus on advanced workflows, extensibility, and automation.
+
+| Track | Summary | Target range |
+| --- | --- | --- |
+| Advanced GUI | Native annotation enhancements, multi-document workspace, visual diff heatmaps | v1.1–v1.2 |
+| Workflow automation | Saved pipelines, watch folders, scheduling, queue templates | v1.2–v1.3 |
+| Collaboration & audit | Shared configs, audit logs, optional DMS/cloud integrations | v1.3–v2.0 |
+| Plugin API | User-defined tool adapters/pipelines for additional utilities | v1.4–v2.0 |
+| Localization & accessibility | GUI translations, keyboard shortcuts, accessibility improvements | v1.1–v1.2 |
+
 ---
 
 Related docs: [Documentation Index](DOCS_INDEX.md) · [Project Launch](PROJECT_LAUNCH.md) · [GUI Technical Plan](GUI_TECH.md)
