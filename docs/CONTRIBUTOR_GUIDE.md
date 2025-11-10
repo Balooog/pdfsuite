@@ -12,7 +12,7 @@ Guidelines for building and maintaining pdfsuite.
 2. Implement changes in `pdfsuite/commands/` or GUI modules.
 3. Run format/lint: `make format && make lint`.
 4. Execute smoke tests: `bash scripts/smoke_test.sh`.
-5. Update docs (CLI reference, guides) for any user-visible change.
+5. Update docs (CLI reference, guides) for any user-visible change and log recurring hiccups in [`CommonErrors.md`](../CommonErrors.md) so future contributors can self-serve fixes.
 6. Open PR referencing issues; fill template (scope, tests, rollback plan).
 
 ## Code style
@@ -27,4 +27,4 @@ Guidelines for building and maintaining pdfsuite.
 
 ---
 
-Related docs: [Documentation Index](DOCS_INDEX.md) · [Testing Handbook](TESTING_HANDBOOK.md) · [Release Playbook](RELEASE_PLAYBOOK.md)
+Related docs: [Documentation Index](DOCS_INDEX.md) · [Testing Handbook](TESTING_HANDBOOK.md) · [Common Errors](../CommonErrors.md) · [Release Playbook](RELEASE_PLAYBOOK.md)
