@@ -1,0 +1,68 @@
+site_name: pdfsuite
+site_description: All-FOSS Acrobat-grade CLI and GUI toolkit
+site_url: https://alex.github.io/pdfsuite/
+repo_url: https://github.com/alex/pdfsuite
+repo_name: alex/pdfsuite
+docs_dir: docs
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.top
+    - toc.integrate
+    - search.highlight
+    - content.code.copy
+  palette:
+    - scheme: slate
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+    - scheme: default
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+markdown_extensions:
+  - admonition
+  - attr_list
+  - codehilite
+  - def_list
+  - footnotes
+  - md_in_html
+  - pymdownx.superfences
+  - toc:
+      permalink: true
+nav:
+  - Home: index.md
+  - CLI:
+      - Operator Guide: OPERATOR_GUIDE.md
+      - Project Launch: PROJECT_LAUNCH.md
+      - Roadmap: ROADMAP.md
+      - Reference:
+          - CLI Reference: 
+              - Merge: CLI_REFERENCE/merge.md
+              - Split: CLI_REFERENCE/split.md
+              - Reorder: CLI_REFERENCE/reorder.md
+              - OCR: CLI_REFERENCE/ocr.md
+              - Optimize: CLI_REFERENCE/optimize.md
+              - Stamp: CLI_REFERENCE/stamp.md
+              - Forms Fill: CLI_REFERENCE/forms_fill.md
+              - Forms Flatten: CLI_REFERENCE/forms_flatten.md
+              - Sign: CLI_REFERENCE/sign.md
+              - Verify: CLI_REFERENCE/verify.md
+              - Redact Safe: CLI_REFERENCE/redact_safe.md
+              - Metadata Scrub: CLI_REFERENCE/metadata_scrub.md
+              - Compare: CLI_REFERENCE/compare.md
+              - Audit: CLI_REFERENCE/audit.md
+  - GUI:
+      - Overview: GUI_OVERVIEW.md
+      - Technical Plan: GUI_TECH.md
+      - Wireframes: GUI_WIREFRAMES.md
+      - User Guide: GUI_USER_GUIDE.md
+  - Engineering:
+      - Documentation Index: DOCS_INDEX.md
+      - Contributor Guide: CONTRIBUTOR_GUIDE.md
+      - Testing Handbook: TESTING_HANDBOOK.md
+      - Troubleshooting FAQ: TROUBLESHOOTING_FAQ.md
+      - Security & Privacy: SECURITY_PRIVACY.md
+      - Release Playbook: RELEASE_PLAYBOOK.md
+      - Architecture Overview: ARCHITECTURE_OVERVIEW.md
