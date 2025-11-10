@@ -1,0 +1,24 @@
+[project]
+name = "pdfsuite"
+version = "0.1.0"
+description = "All-FOSS Acrobat-grade PDF toolkit with a unified CLI"
+readme = "README.md"
+authors = [{name = "Your Name", email = "you@example.com"}]
+requires-python = ">=3.9"
+dependencies = [
+  "typer[all]",
+  "rich",
+]
+
+[project.scripts]
+pdfsuite = "pdfsuite.__main__:app"
+
+[tool.black]
+line-length = 100
+
+[tool.isort]
+profile = "black"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"

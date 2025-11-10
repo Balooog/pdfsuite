@@ -1,0 +1,19 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  lint-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: |
+          python -m venv .venv
+          . .venv/bin/activate
+          pip install -e . black isort ruff
+      - run: . .venv/bin/activate && black --check . && isort --check-only . && ruff check .
+      - name: Doctor (non-blocking)
+        run: |
+          . .venv/bin/activate
+          python scripts/doctor.py || true
