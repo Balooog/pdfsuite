@@ -17,3 +17,24 @@ jobs:
         run: |
           . .venv/bin/activate
           python scripts/doctor.py || true
+  merge-cli:
+    runs-on: ubuntu-latest
+    needs: lint-test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install qpdf
+        run: sudo apt-get update && sudo apt-get install -y qpdf
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pdfsuite
+        run: |
+          python -m venv .venv
+          . .venv/bin/activate
+          pip install -e .
+      - name: Merge smoke test
+        run: |
+          . .venv/bin/activate
+          mkdir -p build
+          pdfsuite merge tests/fixtures/sampleA.pdf tests/fixtures/sampleB.pdf -o build/ci-merged.pdf
+          test -s build/ci-merged.pdf
