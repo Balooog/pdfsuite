@@ -1,6 +1,6 @@
 [project]
 name = "pdfsuite"
-version = "0.1.0"
+version = "0.2.0"
 description = "All-FOSS Acrobat-grade PDF toolkit with a unified CLI"
 readme = "README.md"
 authors = [{name = "Your Name", email = "you@example.com"}]

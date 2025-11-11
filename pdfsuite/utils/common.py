@@ -42,6 +42,18 @@ def ensure_output_dir(path: Path) -> Path:
     return path
 
 
+def ensure_file(path: Path, *, label: str | None = None) -> Path:
+    """Abort early with a clear message if a required file is missing."""
+    if path.is_file():
+        return path
+    target = (label or "file").capitalize()
+    if not path.exists():
+        typer.echo(f"{target} not found: {path}", err=True)
+    else:
+        typer.echo(f"{target} is not a file: {path}", err=True)
+    raise typer.Exit(1)
+
+
 @contextlib.contextmanager
 def temporary_directory(prefix: str = "pdfsuite-") -> Iterator[Path]:
     tmp = tempfile.TemporaryDirectory(prefix=prefix)

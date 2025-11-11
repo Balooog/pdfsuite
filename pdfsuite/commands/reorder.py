@@ -3,6 +3,7 @@ from pathlib import Path
 import typer
 
 from pdfsuite.utils.common import (
+    ensure_file,
     parse_range_sequence,
     require_tools,
     run_or_exit,
@@ -23,10 +24,11 @@ def register(app: typer.Typer) -> None:
     ):
         """Reorder, duplicate, or drop pages using qpdf."""
         require_tools("qpdf")
+        source = ensure_file(input, label="input PDF")
         ranges = parse_range_sequence(order)
-        sequence = " ".join(ranges)
+        spec = ",".join(ranges)
         cmd = (
-            f"qpdf {shell_quote(input)} --pages {shell_quote(input)} "
-            f"{sequence} -- {shell_quote(output)}"
+            f"qpdf {shell_quote(source)} --pages {shell_quote(source)} "
+            f"{shell_quote(spec)} -- {shell_quote(output)}"
         )
         run_or_exit(cmd)

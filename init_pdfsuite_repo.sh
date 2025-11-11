@@ -87,7 +87,7 @@ fi
 if [ ! -f pyproject.toml ]; then cat > pyproject.toml << 'EOF'
 [project]
 name = "pdfsuite"
-version = "0.1.0"
+version = "0.2.0"
 description = "All-FOSS Acrobat-grade PDF toolkit with a unified CLI"
 readme = "README.md"
 authors = [{name = "Your Name", email = "you@example.com"}]
@@ -241,7 +241,7 @@ fi
 # --- pdfsuite/__init__.py ---
 if [ ! -f pdfsuite/__init__.py ]; then cat > pdfsuite/__init__.py << 'EOF'
 __all__ = ["__version__"]
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 EOF
 fi
 

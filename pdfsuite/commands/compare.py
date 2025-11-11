@@ -8,6 +8,7 @@ from typing import List
 import typer
 
 from pdfsuite.utils.common import (
+    ensure_file,
     ensure_output_dir,
     require_tools,
     run_or_exit,
@@ -29,8 +30,10 @@ def register(app: typer.Typer) -> None:
         ),
     ):
         """Compare PDFs via diff-pdf (preferred) or Poppler/ImageMagick."""
+        left = ensure_file(first, label="first PDF")
+        right = ensure_file(second, label="second PDF")
         if headless:
-            headless_diff(first, second, output)
+            headless_diff(left, right, output)
             return
 
         diff_pdf = shutil.which("diff-pdf")
@@ -39,7 +42,7 @@ def register(app: typer.Typer) -> None:
             require_tools("diff-pdf")
             cmd = (
                 f"diff-pdf --output-diff={shell_quote(output)} "
-                f"{shell_quote(first)} {shell_quote(second)}"
+                f"{shell_quote(left)} {shell_quote(right)}"
             )
             run_or_exit(cmd)
             return
@@ -51,7 +54,7 @@ def register(app: typer.Typer) -> None:
                 "for manual comparison.",
                 err=True,
             )
-            cmd = f"diffpdf {shell_quote(first)} {shell_quote(second)}"
+            cmd = f"diffpdf {shell_quote(left)} {shell_quote(right)}"
             run_or_exit(cmd)
             return
 

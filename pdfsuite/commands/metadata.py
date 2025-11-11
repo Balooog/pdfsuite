@@ -1,8 +1,9 @@
+import shutil
 from pathlib import Path
 
 import typer
 
-from pdfsuite.utils.common import run_or_exit, require_tools, shell_quote
+from pdfsuite.utils.common import ensure_file, run_or_exit, require_tools, shell_quote
 
 
 def register(app: typer.Typer) -> None:
@@ -13,5 +14,7 @@ def register(app: typer.Typer) -> None:
     ):
         """Remove metadata using MAT2."""
         require_tools("mat2")
-        cmd = f"mat2 --inplace=false -o {shell_quote(output)} {shell_quote(input)}"
+        source = ensure_file(input, label="input PDF")
+        shutil.copy2(source, output)
+        cmd = f"mat2 --inplace {shell_quote(output)}"
         run_or_exit(cmd)

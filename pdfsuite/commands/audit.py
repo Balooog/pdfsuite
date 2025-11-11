@@ -7,7 +7,7 @@ from typing import Dict, List
 
 import typer
 
-from pdfsuite.utils.common import require_tools
+from pdfsuite.utils.common import ensure_file, require_tools
 
 
 def register(app: typer.Typer) -> None:
@@ -22,13 +22,14 @@ def register(app: typer.Typer) -> None:
     ):
         """Summarize PDF metadata, fonts, encryption, and validation."""
         require_tools("pdfinfo", "pdffonts", "pdfcpu")
+        source = ensure_file(input, label="input PDF")
 
-        info = run_capture(["pdfinfo", str(input)])
-        fonts = run_capture(["pdffonts", str(input)])
-        validation = run_capture(["pdfcpu", "validate", str(input)])
+        info = run_capture(["pdfinfo", str(source)])
+        fonts = run_capture(["pdffonts", str(source)])
+        validation = run_capture(["pdfcpu", "validate", str(source)], allow_failure=True)
 
         summary = {
-            "file": str(input),
+            "file": str(source),
             "pages": parse_pages(info.stdout),
             "encrypted": parse_encrypted(info.stdout),
             "pdfa": detect_pdfa(info.stdout),
@@ -43,8 +44,16 @@ def register(app: typer.Typer) -> None:
         typer.echo(text)
 
 
-def run_capture(args: List[str]) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(args, capture_output=True, text=True)
+def run_capture(
+    args: List[str],
+    *,
+    allow_failure: bool = False,
+) -> subprocess.CompletedProcess[str]:
+    result = subprocess.run(args, capture_output=True, text=True)
+    if not allow_failure and result.returncode != 0:
+        typer.echo(f"Command failed: {' '.join(args)}", err=True)
+        raise typer.Exit(result.returncode)
+    return result
 
 
 def parse_pages(info: str) -> int:
