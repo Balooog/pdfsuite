@@ -6,8 +6,8 @@ Strategic milestones for pdfsuite as we transition from the v0.1.0 baseline into
 
 - **Semantic versioning** – bump minor for new features (v0.2, v0.3), patch for fixes.
 - **Branches** – `main` stays releasable; create topic branches `feature/<slug>` and merge via PR with required status checks (lint, smoke, docs).
-- **Tags** – every release gets an annotated tag (`v0.2.0`) plus GitHub release notes summarizing CLI + GUI updates.
-- **Release cadence** – target small, fast releases (bi-weekly) while GUI is in flux; slow to monthly once stable.
+- **Tags** – we still create annotated tags (`v0.2.0`, `v0.3.0`, …) as internal checkpoints, but we only push/publish them when we’re ready for a public release (target: v1.0 or whenever we explicitly call it).
+- **Release cadence** – checkpoints can happen as often as needed; formal releases (GitHub notes + artifacts) start once the GUI hardening is ready around v1.0.
 
 ## Milestones
 
@@ -60,7 +60,7 @@ Strategic milestones for pdfsuite as we transition from the v0.1.0 baseline into
 
 ## Next actions
 
-1. Cut the v0.2.0 tag (CLI expansion) once smoke + docs sign-off land, then publish annotated release notes.
+1. Cut the v0.2.0 checkpoint tag locally (CLI expansion) once smoke + docs sign-off land; keep it private until we decide to publish a full release.
 1. Stand up GitHub Project board + pytest scaffolding; integrate doc lint + smoke workflow in CI (v0.3.0 gate). See [Project Board](PROJECT_BOARD.md) for column layout and seed issues.
 1. Begin PySide6 skeleton + GUI doc updates once CI foundations are stable (pre-v0.4.0).
 

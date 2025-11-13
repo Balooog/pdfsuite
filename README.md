@@ -38,7 +38,7 @@ Pages, OCR, Redact, Sign, Settings) with live log streaming. Launch it locally w
 ```bash
 make gui           # installs the gui extra and runs python -m gui.main
 # or:
-python -m gui.main --check   # smoke-test the Qt wiring without showing a window
+python -m gui.main --check   # smoke-test the Qt wiring without showing a window (skips doctor/watch)
 ```
 
 Refer to [`docs/GUI_OVERVIEW.md`](docs/GUI_OVERVIEW.md) for panel details and roadmap context.

@@ -1,6 +1,6 @@
 # Release Playbook
 
-Repeatable checklist for tagging and publishing pdfsuite releases.
+Repeatable checklist for tagging and publishing pdfsuite releases. Use this only when we intend to publish a public build (starting around v1.0); interim checkpoint tags can stay local without running the full playbook.
 
 ## Preflight
 

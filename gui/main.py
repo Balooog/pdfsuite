@@ -36,7 +36,7 @@ class MainWindow(QMainWindow):
     status_requested = Signal(str, int)
     """Primary window with sidebar navigation and stacked panels."""
 
-    def __init__(self) -> None:
+    def __init__(self, *, test_mode: bool = False) -> None:
         super().__init__()
         self.setWindowTitle("pdfsuite GUI MVP")
         self.resize(1280, 800)
@@ -83,11 +83,13 @@ class MainWindow(QMainWindow):
         status_bar = self.statusBar()
         self.status_requested.connect(status_bar.showMessage)
         self.status_requested.emit("Ready", 0)
-        if self.settings.data.run_doctor_on_launch:
+        self._test_mode = test_mode
+        if self.settings.data.run_doctor_on_launch and not self._test_mode:
             self._queue_doctor_check()
 
         self.runner.watch_output.connect(self._watch_log)
-        QTimer.singleShot(0, self._start_watch_if_enabled)
+        if not self._test_mode:
+            QTimer.singleShot(0, self._start_watch_if_enabled)
 
     def _queue_doctor_check(self) -> None:
         command = build_cli_command("doctor")
@@ -122,6 +124,8 @@ class MainWindow(QMainWindow):
             panel.refresh()
 
     def _start_watch_if_enabled(self) -> None:
+        if self._test_mode:
+            return
         if self.settings.data.watch_enabled:
             self.runner.start_watch(self.settings.data)
         else:
@@ -142,11 +146,12 @@ def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv if argv is not None else sys.argv[1:])
     qt_args = [sys.argv[0]]
     app = QApplication(qt_args)
-    window = MainWindow()
+    window = MainWindow(test_mode=args.check)
 
     if args.check:
-        # Process a few events to ensure widgets wire up, then exit.
+        # Process a few events to ensure widgets wire up, then exit cleanly.
         app.processEvents()
+        window.runner.stop_watch()
         return 0
 
     window.show()

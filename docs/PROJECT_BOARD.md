@@ -8,7 +8,7 @@ repo-scoped board at https://github.com/Balooog/pdfsuite/projects/1.
 - **Backlog** – raw ideas and roadmap slices that still need grooming.
 - **In Progress** – work with an assigned owner and an active branch/PR.
 - **QA / Review** – code complete work that still needs reviews, tests, or docs sign-off.
-- **Done** – merged & released work (close the linked issue once the release ships).
+- **Done** – merged & validated on `main` (close the linked issue once the change is on `main`, regardless of whether a public release ships).
 
 ## Automation
 

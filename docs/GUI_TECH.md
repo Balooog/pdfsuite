@@ -14,7 +14,7 @@ Engineering notes for the PySide6-based desktop front-end that orchestrates `pdf
 - **Main thread:** Hosts the Qt event loop and UI widgets.
 - **Background worker:** `Runner` service manages a FIFO queue of CLI jobs, spawns a QThread per command, streams stdout/stderr to the target panel, and writes logs.
 - **Job directories:** Every run gets `~/pdfsuite/build/<timestamp>-<slug>/command.log` plus any artifacts the CLI generates. Panels display the log path when work finishes.
-- **Status hooks:** `make gui` can pass `--check`; Settings panel toggles “run doctor on launch,” which enqueues `pdfsuite doctor` via the same runner.
+- **Status hooks:** `make gui` can pass `--check`; Settings panel toggles “run doctor on launch,” which enqueues `pdfsuite doctor` via the same runner (the `--check` flag disables those background jobs so headless CI never leaves stray QThreads).
 
 ## Module layout (current MVP)
 
@@ -110,7 +110,7 @@ The runner always shells out through `python -m pdfsuite …` so the GUI mirrors
 ## Running the shell locally
 
 - Install gui extras and launch the app: `make gui` (creates `.venv`, installs `pdfsuite[gui]`, and runs `python -m gui.main`). PySide6 wheels include QtPdf + WebEngine modules for the Reader/3D panels.
-- Headless wiring check: `python -m gui.main --check` (initializes Qt widgets without opening the window; used for CI smoke tests).
+- Headless wiring check: `python -m gui.main --check` (initializes Qt widgets without opening the window; skips doctor/watch to avoid lingering jobs in CI).
 - Panels stream logs via a shared console; command previews show the exact CLI invocation and the runner reports the log directory when finished.
 
 ## Next steps

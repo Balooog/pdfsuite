@@ -14,7 +14,7 @@ High-level blueprint for `pdfsuite-gui`, the optional desktop companion that wra
 - `gui/main.py` hosts the PySide6 shell with a sidebar + stacked panels.
 - Panels implemented today: Dashboard (doctor/help quick actions), **Reader** (QtPdf viewer + thumbnails/search + outline via `bookmarks dump`), **Bookmarks** (tree editor + pdftk apply), Pages (merge/split/reorder), **Forms** (fill + flatten), **Compare** (diff-pdf or headless), **OCR & Optimize** (presets + target sizing), **3D Viewer** (Qt WebEngine + three.js template with snapshot export), Redact (safe pipeline), Sign (PKCS#12 + visible block helper), **Automation** (watch-folder controls), and **Settings** (external viewer path, output dir, doctor/watch toggles).
 - Every panel relies on the shared runner in `gui/services/runner.py`, which shells out via `python -m pdfsuite …`, queues jobs, and writes `~/pdfsuite/build/<timestamp>-<job>/command.log`.
-- Launch locally with `make gui` (installs the `gui` extra and runs `python -m gui.main`). Use `python -m gui.main --check` for a headless smoke test.
+- Launch locally with `make gui` (installs the `gui` extra and runs `python -m gui.main`). Use `python -m gui.main --check` for a headless smoke test (it bypasses the automatic doctor/watch jobs so CI can exit cleanly).
 
 ## Navigation overview
 
