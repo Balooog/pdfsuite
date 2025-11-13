@@ -27,15 +27,32 @@ if ! gh api "repos/$REPO/milestones?state=all&per_page=100" \
   --jq '.[] | select(.title=="'"$MILESTONE"'") | .number' | grep -q .; then
   echo "Creating milestone: $MILESTONE"
   gh api "repos/$REPO/milestones" -X POST -f title="$MILESTONE" -f state=open \
-    -f description="v0.3.0 release work" >/dev/null
+    -f description="${MILESTONE} release work" >/dev/null
 fi
 
-declare -a ITEMS=(
-  "CLI coverage expansion::project_board_seed/cli_coverage_expansion.md"
-  "Windows smoke parity::project_board_seed/windows_smoke_parity.md"
-  "Docs lint enforcement::project_board_seed/doc_lint_enforcement.md"
-  "Contributor Guide refresh::project_board_seed/contributor_guide_refresh.md"
-)
+declare -a ITEMS=()
+
+case "$MILESTONE" in
+  v0.3.0)
+    ITEMS=(
+      "CLI coverage expansion::project_board_seed/cli_coverage_expansion.md"
+      "Windows smoke parity::project_board_seed/windows_smoke_parity.md"
+      "Docs lint enforcement::project_board_seed/doc_lint_enforcement.md"
+      "Contributor Guide refresh::project_board_seed/contributor_guide_refresh.md"
+    )
+    ;;
+  v0.4.0)
+    ITEMS=(
+      "GUI shell MVP::project_board_seed/gui_shell_mvp.md"
+      "GUI smoke CI + PyInstaller::project_board_seed/gui_smoke_ci.md"
+      "Security & privacy gate::project_board_seed/security_privacy_gate.md"
+    )
+    ;;
+  *)
+    echo "No seed items defined for milestone $MILESTONE" >&2
+    exit 1
+    ;;
+esac
 
 for item in "${ITEMS[@]}"; do
   title=${item%%::*}

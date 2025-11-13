@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from pathlib import Path
 
 from typer.testing import CliRunner
@@ -34,21 +35,33 @@ def test_metadata_scrub_copies_and_runs(tmp_path, command_recorder, monkeypatch)
     assert recorded == [f"mat2 --inplace {shell_quote(output)}"]
 
 
-def test_optimize_builds_gs_command(tmp_path, command_recorder):
+def test_optimize_builds_gs_command(tmp_path, command_recorder, monkeypatch):
     recorded = command_recorder("pdfsuite.commands.optimize")
     source = tmp_path / "source.pdf"
+    source.write_text("pdf")
     output = tmp_path / "opt.pdf"
+    tmpdir = tmp_path / "tmp"
+    tmpdir.mkdir()
+
+    @contextmanager
+    def fake_tmp(prefix="pdfsuite-"):
+        yield tmpdir
+
+    monkeypatch.setattr("pdfsuite.commands.optimize.temporary_directory", fake_tmp)
+    monkeypatch.setattr("pdfsuite.commands.optimize.file_size", lambda path: 0)
 
     result = runner.invoke(app, ["optimize", str(source), "-o", str(output)])
 
     assert result.exit_code == 0
+    intermediate = tmpdir / "optimized.pdf"
     assert recorded == [
         (
             "gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.6 "
-            "-dPDFSETTINGS=/printer -dDetectDuplicateImages=true "
-            "-dDownsampleColorImages=true -dColorImageResolution=150 "
-            f"-o {shell_quote(output)} {shell_quote(source)}"
-        )
+            "-dPDFSETTINGS=/printer -dDetectDuplicateImages=true -dDownsampleColorImages=true "
+            "-dColorImageResolution=300 -dGrayImageResolution=300 -dMonoImageResolution=300 "
+            f"-o {shell_quote(intermediate)} {shell_quote(source)}"
+        ),
+        f"qpdf --linearize {shell_quote(intermediate)} {shell_quote(output)}",
     ]
 
 

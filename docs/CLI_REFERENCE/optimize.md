@@ -1,22 +1,31 @@
 # pdfsuite optimize
 
-**Purpose:** Compress and normalize PDFs with Ghostscript presets.
+**Purpose:** Compress/linearize PDFs using Ghostscript presets with optional target sizes.
 
-**Syntax:**
+## Syntax
 
-```bash
+```
 pdfsuite optimize <input.pdf> -o <output.pdf>
+                  [--preset {email,report,poster}]
+                  [--target-size <MB>]
 ```
 
-**External tools:** Ghostscript (gs)
+**External tools:** Ghostscript (`gs`), qpdf
 
-**Behavior notes:**
+## Presets
 
-- Uses /printer preset; adjust command manually for alternative targets.
+| Preset  | Use case                                    | Details |
+|---------|---------------------------------------------|---------|
+| `email` | aggressive downsampling for inbox-friendly attachments | `/screen` profile + image downsample to 150/120/96 dpi (auto-tightens when `--target-size` is used) |
+| `report`| general-purpose reports with charts/text    | `/printer` profile + 300/240/200 dpi tiers |
+| `poster`| minimal touch for vector-heavy posters      | `/prepress` profile + higher-resolution floor |
 
-**Examples:**
+With `--target-size`, the command retries with increasingly lower resolutions until the output is ≤ target MB (or all tiers are exhausted). Outputs are linearized via `qpdf --linearize`.
 
-- `pdfsuite optimize brochure.pdf -o brochure_small.pdf`
+## Examples
+
+- `pdfsuite optimize brochure.pdf -o brochure_small.pdf --preset email`
+- `pdfsuite optimize deck.pdf -o deck_8mb.pdf --preset report --target-size 8`
 
 ______________________________________________________________________
 

@@ -7,6 +7,7 @@ Welcome to the canonical documentation for the pdfsuite project. This portal is 
 - Read the [README](https://github.com/alex/pdfsuite/blob/main/README.md) for installation and sample commands.
 - Run `pdfsuite doctor` to verify you have qpdf, pdfcpu, Ghostscript, OCRmyPDF, pdftk-java, jSignPdf, MAT2, and diff-pdf/diffpdf installed.
 - Explore the [Operator Guide](OPERATOR_GUIDE.md) for recipes (merge, split, OCR, stamping, signing, etc.).
+- Launch the PySide6 GUI shell with `make gui` to exercise the Dashboard, Reader, Bookmarks, Pages, OCR/Optimize, Redact, Sign, and Settings panels.
 
 ## Documentation sections
 

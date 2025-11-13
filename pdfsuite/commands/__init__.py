@@ -1,6 +1,8 @@
 __all__ = [
     "audit",
+    "bookmarks",
     "compare",
+    "figure",
     "forms",
     "merge",
     "metadata",
@@ -12,4 +14,5 @@ __all__ = [
     "split",
     "stamp",
     "verify",
+    "watch",
 ]

@@ -41,10 +41,15 @@ gh issue create \
 
 Seed cards to create:
 
-1. **CLI coverage expansion** – more pytest slices to push coverage past 60%.
-1. **Windows smoke parity** – replicate Linux smoke breadth on Windows runners.
-1. **Docs lint enforcement** – formalize contributor hooks to match CI’s doc gate.
-1. **Contributor Guide refresh** – teach new contributors how to use the board + CI.
+- **v0.3.0 quality gates**
+  1. **CLI coverage expansion** – more pytest slices to push coverage past 60%.
+  1. **Windows smoke parity** – replicate Linux smoke breadth on Windows runners.
+  1. **Docs lint enforcement** – formalize contributor hooks to match CI’s doc gate.
+  1. **Contributor Guide refresh** – teach new contributors how to use the board + CI.
+- **v0.4.0 GUI + security gates**
+  1. **GUI shell MVP** – PySide6 shell plus Dashboard/Pages/OCR/Redact/Sign panels wired to the CLI.
+  1. **GUI smoke CI + PyInstaller** – xvfb + pytest-qt smokes and artifact builds in GitHub Actions.
+  1. **Security & privacy gate** – redaction validation demo + signing key hygiene checklist updates.
 
 Link each issue to the roadmap milestone so the board reflects progress automatically.
 

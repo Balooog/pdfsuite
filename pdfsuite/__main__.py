@@ -8,7 +8,9 @@ from rich import print
 from pdfsuite import __version__
 from pdfsuite.commands import (
     audit,
+    bookmarks,
     compare,
+    figure,
     forms,
     merge,
     metadata,
@@ -20,6 +22,7 @@ from pdfsuite.commands import (
     split,
     stamp,
     verify,
+    watch,
 )
 
 app = typer.Typer(add_completion=False, help="All‑FOSS Acrobat‑grade PDF toolkit")
@@ -28,7 +31,9 @@ app = typer.Typer(add_completion=False, help="All‑FOSS Acrobat‑grade PDF too
 def _register_commands() -> None:
     modules = [
         audit,
+        bookmarks,
         compare,
+        figure,
         forms,
         merge,
         metadata,
@@ -40,6 +45,7 @@ def _register_commands() -> None:
         split,
         stamp,
         verify,
+        watch,
     ]
     for module in modules:
         module.register(app)

@@ -21,11 +21,27 @@ pdfsuite split in.pdf --pages 1-3,4-z -o parts/
 pdfsuite reorder in.pdf --order 5-7,1-4,8-z -o reordered.pdf
 pdfsuite compare a.pdf b.pdf --headless -o diff.pdf
 pdfsuite audit in.pdf -o audit.json
+pdfsuite optimize brochure.pdf -o brochure_small.pdf --preset email
+pdfsuite figure surfer.pdf -o surfer_small.pdf --target-size 3
+pdfsuite watch --preset email --target-size 3   # monitor Printed PDFs folder
 ```
 
 ## System deps
 
 See **docs/OPERATOR_GUIDE.md** and run `pdfsuite doctor` for per‑OS guidance.
+
+## GUI shell preview
+
+The PySide6 desktop shell lives under `gui/` and mirrors the CLI workflows (Reader, Bookmarks,
+Pages, OCR, Redact, Sign, Settings) with live log streaming. Launch it locally with:
+
+```bash
+make gui           # installs the gui extra and runs python -m gui.main
+# or:
+python -m gui.main --check   # smoke-test the Qt wiring without showing a window
+```
+
+Refer to [`docs/GUI_OVERVIEW.md`](docs/GUI_OVERVIEW.md) for panel details and roadmap context.
 
 ## Philosophy
 

@@ -31,13 +31,14 @@ Strategic milestones for pdfsuite as we transition from the v0.1.0 baseline into
 
 ### v0.4.0 – GUI MVP + Security
 
-- PySide6 shell with Dashboard, Pages, OCR, Redact, Sign panels wired to CLI + background runner.
-- GUI smoke tests (pytest-qt under xvfb) integrated into CI; `make gui` builds PyInstaller bundles.
+- PySide6 shell with Dashboard, Reader, Bookmarks, Pages, OCR/Optimize (presets), 3D Viewer, Redact, Sign, and Settings panels wired to the CLI runner with per-job logs.
+- GUI smoke tests (pytest-qt under xvfb) integrate with CI; `make gui` builds PyInstaller bundles ready for AppImage/Windows experiments.
 - Security & Privacy doc reviewed; redaction validation demo ensures no residual text; signing key hygiene checklist.
+- Watch-folder CLI (`pdfsuite watch`) lands for automated optimize workflows; GUI exposes corresponding presets in Settings ahead of a dedicated automation panel.
 
 ### v0.5.0 – Docs & Distribution
 
-- Testing Handbook, Troubleshooting FAQ, Release Playbook fully populated and lint-clean.
+- Testing Handbook, Troubleshooting FAQ, Release Playbook, and Surfer Figure Export guide fully populated and lint-clean.
 - Automated changelog + GitHub Release workflow (attach AppImage + Windows bundle, sign artifacts).
 - Documentation portal considered frozen for v1 scope; doc lint is mandatory gate.
 
@@ -59,7 +60,7 @@ Strategic milestones for pdfsuite as we transition from the v0.1.0 baseline into
 
 ## Next actions
 
-1. Finish CLI expansion PR (split/reorder/compare/audit) and smoke test new commands (v0.2.0 gate).
+1. Cut the v0.2.0 tag (CLI expansion) once smoke + docs sign-off land, then publish annotated release notes.
 1. Stand up GitHub Project board + pytest scaffolding; integrate doc lint + smoke workflow in CI (v0.3.0 gate). See [Project Board](PROJECT_BOARD.md) for column layout and seed issues.
 1. Begin PySide6 skeleton + GUI doc updates once CI foundations are stable (pre-v0.4.0).
 

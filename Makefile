@@ -1,4 +1,4 @@
-.PHONY: venv install dev doctor format lint test doclint smoke
+.PHONY: venv install dev doctor format lint test doclint smoke gui
 
 venv:
 	python3 -m venv .venv
@@ -28,3 +28,7 @@ doclint:
 
 smoke:
 	bash scripts/smoke_test.sh
+
+gui: install
+	. .venv/bin/activate; pip install -e .[gui]
+	. .venv/bin/activate; python -m gui.main

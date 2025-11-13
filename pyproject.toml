@@ -19,6 +19,10 @@ docs = [
   "mdformat>=0.7",
   "pre-commit>=3.5",
 ]
+gui = [
+  "PySide6>=6.6",
+  "platformdirs>=4.2",
+]
 
 [project.scripts]
 pdfsuite = "pdfsuite.__main__:app"
@@ -34,7 +38,10 @@ addopts = "--cov=pdfsuite --cov-report=term-missing --cov-fail-under=60"
 testpaths = ["tests"]
 
 [tool.setuptools.packages.find]
-include = ["pdfsuite*"]
+include = ["pdfsuite*", "gui*"]
+
+[tool.setuptools.package-data]
+"gui.assets" = ["3d_viewer/*"]
 
 [build-system]
 requires = ["setuptools>=61.0"]
