@@ -113,11 +113,16 @@ The runner always shells out through `python -m pdfsuite …` so the GUI mirrors
 - Headless wiring check: `python -m gui.main --check` (initializes Qt widgets without opening the window; skips doctor/watch to avoid lingering jobs in CI).
 - Panels stream logs via a shared console; command previews show the exact CLI invocation and the runner reports the log directory when finished.
 
+## CI automation
+
+- `gui-smoke-linux` job (GitHub Actions) installs the GUI extras, runs `xvfb-run python -m gui.main --check`, and ensures QtPdf/WebEngine wiring continues to load in headless runners.
+- `gui-pyinstaller` job reuses the same runner image, installs PyInstaller, builds a `dist/pdfsuite-gui` folder via `pyinstaller gui/main.py --collect-all gui --collect-all pdfsuite`, and uploads the artifact for manual testing.
+
 ## Next steps
 
-1. Prototype the GitHub Actions job that builds the GUI with PyInstaller on Linux/Windows to catch packaging regressions early.
-1. Layer in additional panels (Forms, Compare, Watch Folder automation) now that the base runner/preview/widgets exist.
-1. Tighten the Dashboard queue builder so multiple CLI jobs can be enqueued before dispatching through the runner.
+1. Mirror the PyInstaller build on Windows runners once the Linux artifact footprint stabilizes.
+1. Layer in advanced dashboard tooling (queue presets, multi-job pipelines) and deepen automation panel coverage (watch-folder history, presets).
+1. Expand screenshot/QA coverage (pytest-qt harness that drives panel interactions) so GUI regressions surface early.
 
 ______________________________________________________________________
 
