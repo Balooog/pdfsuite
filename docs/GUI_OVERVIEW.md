@@ -12,18 +12,26 @@ High-level blueprint for `pdfsuite-gui`, the optional desktop companion that wra
 ## MVP shell status
 
 - `gui/main.py` hosts the PySide6 shell with a sidebar + stacked panels.
-- Panels implemented today: Dashboard (doctor/help quick actions), **Reader** (QtPdf viewer + thumbnails/search + outline via `bookmarks dump`), **Bookmarks** (tree editor + pdftk apply), Pages (merge/split/reorder), **Forms** (fill + flatten), **Compare** (diff-pdf or headless), **OCR & Optimize** (presets + target sizing), **3D Viewer** (Qt WebEngine + three.js template with snapshot export), Redact (safe pipeline), Sign (PKCS#12 + visible block helper), **Automation** (watch-folder controls), and **Settings** (external viewer path, output dir, doctor/watch toggles).
+- Panels implemented today: Dashboard (doctor/help quick actions), **Reader** (QtPdf viewer + thumbnails/search + outline via `bookmarks dump`), **Bookmarks** (tree editor + pdftk apply), Pages (merge/split/reorder), **Forms** (fill + flatten), **Compare** (diff-pdf or headless), **OCR & Optimize** (presets + target sizing), **3D Viewer** (Qt WebEngine + three.js template with snapshot export), Redact (safe pipeline), Sign (PKCS#12 + visible block helper), **Automation** (watch-folder controls), and **Settings** (external viewer path, default output, doctor/watch toggles + default-app helpers).
 - Every panel relies on the shared runner in `gui/services/runner.py`, which shells out via `python -m pdfsuite …`, queues jobs, and writes `~/pdfsuite/build/<timestamp>-<job>/command.log`.
 - Launch locally with `make gui` (installs the `gui` extra and runs `python -m gui.main`). Use `python -m gui.main --check` for a headless smoke test (it bypasses the automatic doctor/watch jobs so CI can exit cleanly).
+
+### Reader as the “default” pdfsuite experience
+
+- QtPdf-powered canvas with Single/Continuous modes, Fit Width/Page/Actual zoom, smooth Ctrl+wheel zooming, Ctrl+Shift+wheel horizontal panning, and standard wheel scrolling.
+- Left dock: Thumbnail strip (lazy pixmaps sized for HiDPI) with multi-select + drag/drop. Each move marks the session **Unsaved** and feeds the shared document session used by the Pages panel.
+- Right dock: Outline/Bookmarks tree sourced via `pdfsuite bookmarks dump` with inline filtering and double-click navigation. Changing an entry can push edits back via the Bookmarks panel.
+- Toolbar actions expose everything a “default app” needs: Open (with MRU), Save/Save As (background writer that never blocks the UI), Single/Continuous toggle, zoom presets, Find box, “Open externally”, and an optional “Make pdfsuite default viewer” toggle that surfaces platform-specific helpers (Windows registry import, Linux `xdg-mime` + `.desktop` launcher).
+- Status bar reports filename, page X/N, zoom %, and highlights Unsaved sessions. Logs stay hidden until errors occur, keeping the chrome minimal.
 
 ## Navigation overview
 
 - **Dashboard** – recent jobs, quick-actions (“Merge PDFs”, “OCR Scan”, “Optimize for email”, “Bates batch”), and fast access to the job queue/history.
-- **Reader** – QtPdf viewer with Single/Continuous toggle, Fit Width/Page zoom, thumbnails, outline/bookmarks tree (fed by the CLI), search powered by `pdftotext`, and “Open externally” button honoring the Settings panel.
+- **Reader** – first-class “default PDF” view with Single/Continuous modes, Fit Width/Page zoom, Ctrl/Ctrl+Shift wheel gestures, thumbnails, outline/bookmarks (fed by `pdfsuite bookmarks dump`), incremental text search (`pdftotext`), drag/drop reordering, Save/Save As, “Open externally,” and a dedicated **Open in Pages…** bridge that shares the live document session with the Pages panel.
 - **Bookmarks** – tree editor for titles/pages, add/edit/indent/outdent controls, import/export of pdftk dump format, and one-click apply back to a PDF (runs `pdfsuite bookmarks apply` under the hood).
 - **OCR & Optimize** – toggles between OCR-only (`pdfsuite ocr`) and optimize-only (`pdfsuite optimize`) with presets/target size fields to mirror the CLI flags.
 - **3D Viewer** – loads `.glb/.gltf` (or user-supplied HTML) into a bundled three.js template running in Qt WebEngine; offers orbit/pan/zoom plus a “snapshot to PDF” action that captures the viewport and shells out to `pdfcpu import`.
-- **Pages** – thumbnail grid with drag-drop reorder, range selector input (`1-3,7,10-`), delete/duplicate controls, rotate/crop adjustments, and split/merge buttons.
+- **Pages** – thumbnail grid with drag-drop reorder, range selector input (`1-3,7,10-`), delete/duplicate controls, rotate/crop adjustments, and split/merge buttons. When a Reader session is shared, the panel exposes live controls (page-order text box, Bates preview, Save/Save As) so you can commit changes without reloading the source file.
 - **Forms** – fill PDFs from FDF/XFDF data or flatten in-place using the pdftk-based CLI.
 - **Compare** – pick two PDFs, set an output path, and choose diff-pdf vs headless fallback.
 - **OCR & Optimize** – toggles for OCR language packs, deskew/clean, PDF/A, followed by Ghostscript optimize presets (screen/printer/custom).

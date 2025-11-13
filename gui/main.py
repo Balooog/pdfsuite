@@ -29,7 +29,7 @@ from gui.panels import (
     SettingsPanel,
     ThreeDPanel,
 )
-from gui.services import Runner, SettingsStore, build_cli_command
+from gui.services import Runner, SettingsStore, build_cli_command, get_session_bus
 
 
 class MainWindow(QMainWindow):
@@ -43,6 +43,7 @@ class MainWindow(QMainWindow):
 
         self.runner = Runner()
         self.settings = SettingsStore()
+        self.session_bus = get_session_bus()
         self._panels: list[tuple[str, object]] = []
 
         splitter = QSplitter(Qt.Horizontal)
@@ -57,9 +58,9 @@ class MainWindow(QMainWindow):
 
         panel_definitions = [
             ("Dashboard", lambda: DashboardPanel(self.runner)),
-            ("Reader", lambda: ReaderPanel(self.runner, self.settings)),
+            ("Reader", lambda: ReaderPanel(self.runner, self.settings, self.session_bus)),
             ("Bookmarks", lambda: BookmarksPanel(self.runner, self.settings)),
-            ("Pages", lambda: PagesPanel(self.runner)),
+            ("Pages", lambda: PagesPanel(self.runner, self.session_bus)),
             ("Forms", lambda: FormsPanel(self.runner)),
             ("Compare", lambda: ComparePanel(self.runner)),
             ("OCR / Optimize", lambda: OcrOptimizePanel(self.runner)),
@@ -90,6 +91,7 @@ class MainWindow(QMainWindow):
         self.runner.watch_output.connect(self._watch_log)
         if not self._test_mode:
             QTimer.singleShot(0, self._start_watch_if_enabled)
+        self.session_bus.session_shared.connect(self._handle_session_share)
 
     def _queue_doctor_check(self) -> None:
         command = build_cli_command("doctor")
@@ -118,6 +120,12 @@ class MainWindow(QMainWindow):
                 return widget
         return None
 
+    def _focus_panel(self, name: str) -> None:
+        for idx, (panel_name, _) in enumerate(self._panels):
+            if panel_name == name:
+                self.nav.setCurrentRow(idx)
+                return
+
     def _refresh_automation_panel(self) -> None:
         panel = self._get_panel("Automation")
         if panel and hasattr(panel, "refresh"):
@@ -130,6 +138,12 @@ class MainWindow(QMainWindow):
             self.runner.start_watch(self.settings.data)
         else:
             self.runner.stop_watch()
+
+    def _handle_session_share(self, session) -> None:
+        pages = self._get_panel("Pages")
+        if pages and hasattr(pages, "attach_session"):
+            pages.attach_session(session)
+            self._focus_panel("Pages")
 
 
 def parse_args(argv: list[str]) -> argparse.Namespace:

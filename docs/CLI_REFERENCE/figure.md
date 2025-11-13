@@ -5,25 +5,28 @@ Auto-selects an optimization preset for figure-heavy PDFs (e.g., exported plots,
 ## Syntax
 
 ```
-pdfsuite figure <input.pdf> -o <output.pdf> [--target-size <MB>]
+pdfsuite figure <input.pdf> -o <output.pdf>
+                [--target-size <MB>]
+                [--max-tries <N>]
 ```
 
-**External tools:** `pdfimages` (analysis), `gs`, `qpdf`
+**External tools:** `pdfimages`, `pdfinfo` (analysis), `gs`, `qpdf`
 
 ## Behavior
 
-- Inspects the PDF with `pdfimages -list` to gauge image count/size.
+- Inspects the PDF with `pdfimages -list` + `pdfinfo` to gauge image count, dimensions, and whether all pages are vector.
 - Chooses a preset:
   - `email` for raster-heavy docs (≥5 images or multiple ≥2000 px assets).
   - `report` for mixed vector/raster (default).
-  - `poster` when no images are detected.
-- Calls `pdfsuite optimize … --preset <choice>` internally. Logs show the preset and log directory.
-- `--target-size` (MB) behaves like the optimize command: reruns with stricter downsampling until the size goal is met or the preset tiers are exhausted.
+  - `poster` when no images are detected (vector-first workflow).
+- Calls `pdfsuite optimize … --preset <choice>` internally. Logs show the preset, retry ladder, and final size.
+- `--target-size` (MB) behaves like the optimize command: reruns with stricter downsampling until the size goal is met or tries are exhausted. Use `--max-tries` to override the default ladder depth (3).
 
 ## Examples
 
 - `pdfsuite figure surfer_export.pdf -o surfer_web.pdf`
 - `pdfsuite figure map.pdf -o map_3mb.pdf --target-size 3`
+- `pdfsuite figure deck.pdf -o deck_email.pdf --target-size 2 --max-tries 5`
 
 ______________________________________________________________________
 

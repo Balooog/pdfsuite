@@ -56,17 +56,23 @@ Strategic milestones for pdfsuite as we transition from the v0.1.0 baseline into
 
 ## Supporting tracks
 
-| Track | Description | Target start | | --- | --- | --- | | Docs infrastructure | MkDocs site, CLI Reference, Contributor Guide, doc linting | v0.3.0 | | Testing escalation | Pytest coverage + GUI smoke tests; coverage target increases each release | v0.3.0 → v0.4.0 | | Release automation | Auto changelog + release artifacts (AppImage/Windows zip) via GitHub Actions | v0.5.0 | | Security validation | Redaction verification routine; signing key hygiene audits | v0.4.0 → v0.5.0 | | Project management | GitHub Project board (Backlog/In Progress/QA/Done) + milestone labels | v0.3.0 |
+| Track | Description | Target start | | --- | --- | --- | | Docs infrastructure | MkDocs site, CLI Reference, Contributor Guide, doc linting | v0.3.0 | | Testing escalation | Pytest coverage + GUI smoke tests; coverage target increases each release | v0.3.0 → v0.4.0 | | Reader MVP polish | Default-app UX (thumbnails, outline, drag reorder, Save/Save As), shared document session, smooth zoom/pan gestures | v0.4.0 | | Release automation | Auto changelog + release artifacts (AppImage/Windows zip) via GitHub Actions | v0.5.0 | | Security validation | Redaction verification routine; signing key hygiene audits | v0.4.0 → v0.5.0 | | Project management | GitHub Project board (Backlog/In Progress/QA/Done) + milestone labels | v0.3.0 |
 
 ## Next actions
 
 1. Cut the v0.2.0 checkpoint tag locally (CLI expansion) once smoke + docs sign-off land; keep it private until we decide to publish a full release.
 1. Stand up GitHub Project board + pytest scaffolding; integrate doc lint + smoke workflow in CI (v0.3.0 gate). See [Project Board](PROJECT_BOARD.md) for column layout and seed issues.
-1. Begin PySide6 skeleton + GUI doc updates once CI foundations are stable (pre-v0.4.0).
+1. Begin PySide6 skeleton + GUI doc updates once CI foundations are stable (pre-v0.4.0). Reader MVP polish work (default-app gestures + document session) lives in this lane so it can feed the Pages integration.
 
 ## Future work / v1.x+ backlog
 
 v1.0 delivers Acrobat-grade parity with a stable GUI, CI, and distribution pipeline. Subsequent releases will focus on advanced workflows, extensibility, and automation.
+
+### Reader continuous improvements
+
+- Multi-tab Reader + split-view compare modes.
+- Snapshot/export helpers (PNG/PDF), auto-bookmarks from heading detection, HiDPI thumbnail tiling.
+- Accessibility: keyboard-first navigation, announcing page/zoom changes, high-contrast theme.
 
 | Track | Summary | Target range | | --- | --- | --- | | Advanced GUI | Native annotation enhancements, multi-document workspace, visual diff heatmaps | v1.1–v1.2 | | Workflow automation | Saved pipelines, watch folders, scheduling, queue templates | v1.2–v1.3 | | Collaboration & audit | Shared configs, audit logs, optional DMS/cloud integrations | v1.3–v2.0 | | Plugin API | User-defined tool adapters/pipelines for additional utilities | v1.4–v2.0 | | Localization & accessibility | GUI translations, keyboard shortcuts, accessibility improvements | v1.1–v1.2 |
 

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 
 from PySide6.QtWidgets import (
@@ -10,7 +11,9 @@ from PySide6.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QLineEdit,
+    QMessageBox,
     QPushButton,
+    QSpinBox,
     QVBoxLayout,
     QWidget,
 )
@@ -47,6 +50,32 @@ class SettingsPanel(QWidget):
         form.addRow(self.run_doctor_check)
 
         layout.addLayout(form)
+
+        layout.addWidget(QLabel("<h3>Reader preferences</h3>"))
+        reader_form = QFormLayout()
+        self.zoom_step_spin = QSpinBox()
+        self.zoom_step_spin.setRange(1, 50)
+        self.zoom_step_spin.setValue(settings.data.reader_zoom_step)
+        reader_form.addRow("Zoom step (%)", self.zoom_step_spin)
+
+        self.pan_speed_spin = QSpinBox()
+        self.pan_speed_spin.setRange(16, 512)
+        self.pan_speed_spin.setValue(settings.data.reader_pan_speed)
+        reader_form.addRow("Pan speed (px)", self.pan_speed_spin)
+
+        self.thumb_size_spin = QSpinBox()
+        self.thumb_size_spin.setRange(48, 256)
+        self.thumb_size_spin.setValue(settings.data.reader_thumbnail_size)
+        reader_form.addRow("Thumbnail size (px)", self.thumb_size_spin)
+
+        self.reader_layout_check = QCheckBox("Remember dock layout")
+        self.reader_layout_check.setChecked(settings.data.remember_reader_layout)
+        reader_form.addRow(self.reader_layout_check)
+
+        self.default_helper_button = QPushButton("Default app helper…")
+        self.default_helper_button.clicked.connect(self._show_default_helper)
+        reader_form.addRow(self.default_helper_button)
+        layout.addLayout(reader_form)
 
         layout.addWidget(QLabel("<h3>Watch-folder automation</h3>"))
         watch_form = QFormLayout()
@@ -110,7 +139,39 @@ class SettingsPanel(QWidget):
         self.settings.data.watch_preset = self.watch_preset_combo.currentText()
         target_text = self.watch_target_edit.text().strip()
         self.settings.data.watch_target_size = float(target_text) if target_text else None
+        self.settings.data.reader_zoom_step = self.zoom_step_spin.value()
+        self.settings.data.reader_pan_speed = self.pan_speed_spin.value()
+        self.settings.data.reader_thumbnail_size = self.thumb_size_spin.value()
+        self.settings.data.remember_reader_layout = self.reader_layout_check.isChecked()
         Path(output).mkdir(parents=True, exist_ok=True)
         self.settings.save()
         if self._on_save:
             self._on_save()
+
+    def _show_default_helper(self) -> None:
+        if sys.platform.startswith("win"):
+            message = (
+                "Generate a .reg file with the following contents (update the exe path) and double-click it:\n\n"
+                'Windows Registry Editor Version 5.00\n\n'
+                '[HKEY_CURRENT_USER\\Software\\Classes\\pdfsuite.pdf]\n'
+                '@="pdfsuite PDF"\n'
+                '"FriendlyTypeName"="pdfsuite PDF"\n'
+                '[HKEY_CURRENT_USER\\Software\\Classes\\.pdf]\n'
+                '@="pdfsuite.pdf"\n'
+                '[HKEY_CURRENT_USER\\Software\\Classes\\pdfsuite.pdf\\shell\\open\\command]\n'
+                f'@="\\"{sys.executable}\\" -m gui.main \\"%1\\""\n\n'
+                "You can revert via Windows Settings ▸ Apps ▸ Default apps."
+            )
+        else:
+            desktop_path = Path.home() / ".local" / "share" / "applications" / "pdfsuite.desktop"
+            message = (
+                "Create ~/.local/share/applications/pdfsuite.desktop with:\n\n"
+                "[Desktop Entry]\n"
+                "Type=Application\n"
+                "Name=pdfsuite GUI\n"
+                f"Exec={sys.executable} -m gui.main %f\n"
+                "MimeType=application/pdf;\n\n"
+                f"Then run: xdg-mime default pdfsuite.desktop application/pdf\n"
+                f"(desktop file path: {desktop_path})"
+            )
+        QMessageBox.information(self, "Default PDF helper", message)

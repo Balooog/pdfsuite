@@ -16,6 +16,10 @@ class GuiSettings:
     watch_preset: str = "report"
     watch_target_size: float | None = None
     watch_enabled: bool = False
+    reader_zoom_step: int = 10
+    reader_pan_speed: int = 64
+    reader_thumbnail_size: int = 96
+    remember_reader_layout: bool = True
 
 
 class SettingsStore:
@@ -46,6 +50,16 @@ class SettingsStore:
             watch_preset=payload.get("watch_preset", self.data.watch_preset),
             watch_target_size=payload.get("watch_target_size", self.data.watch_target_size),
             watch_enabled=payload.get("watch_enabled", self.data.watch_enabled),
+            reader_zoom_step=payload.get("reader_zoom_step", self.data.reader_zoom_step),
+            reader_pan_speed=payload.get("reader_pan_speed", self.data.reader_pan_speed),
+            reader_thumbnail_size=payload.get(
+                "reader_thumbnail_size",
+                self.data.reader_thumbnail_size,
+            ),
+            remember_reader_layout=payload.get(
+                "remember_reader_layout",
+                self.data.remember_reader_layout,
+            ),
         )
 
     def save(self) -> None:

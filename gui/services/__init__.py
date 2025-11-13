@@ -5,6 +5,7 @@ from .pdf_preview import PdfPreviewProvider
 from .bookmarks_io import BookmarkNode, parse_dump, serialize_nodes
 from .settings import SettingsStore, GuiSettings
 from .assets import get_asset_path
+from .session_bus import get_session_bus
 
 __all__ = [
     "Runner",
@@ -16,4 +17,5 @@ __all__ = [
     "SettingsStore",
     "GuiSettings",
     "get_asset_path",
+    "get_session_bus",
 ]

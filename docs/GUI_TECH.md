@@ -100,6 +100,15 @@ gui/
 
 The runner always shells out through `python -m pdfsuite …` so the GUI mirrors the CLI behavior and inherits the current virtualenv.
 
+### Reader rendering & input stack
+
+- **Preferred backend:** QtPdf (`PySide6.QtPdf` + `QtPdfWidgets`). If imports fail, the panel degrades gracefully: thumbnails fall back to Poppler (`pdftoppm`) thumbnails and main rendering opens the file with the external viewer.
+- **Search helper:** `pdftotext` is invoked per page; results are cached in-memory for the session and invalidated on reorder/save.
+- **Background writer:** Save/Save As queue a job through `Runner`, which writes to `~/pdfsuite/build/<timestamp>-reader>` and only replaces the target once qpdf/pdfcpu succeed. UI stays responsive; a toast appears when complete.
+- **Input bindings:** `Ctrl + wheel` zooms in configurable 10 % steps, `Ctrl + Shift + wheel` pans horizontally, plain wheel scrolls vertically. These hooks live in `reader.py` and read their defaults from `SettingsStore`. Keyboard equivalents (`Ctrl +/-`, arrow keys) are wired through Qt as well.
+- **Shared document session:** `pdfsuite/core/document_session.py` tracks page order, selection, and undo/redo history. Every commit shells out to `python -m pdfsuite reorder …` via the Runner so Reader, Pages, and future workflows operate on the same state without blocking the UI.
+- **Session bus:** `gui/services/session_bus.py` exposes a singleton Qt signal hub so Reader can broadcast “Open in Pages…” events and both panels hear about successful commits. The object reference stays shared, so edits in either panel manipulate the same in-memory session before it is written back to disk.
+
 ### 3D viewer pipeline
 
 - `gui/panels/three_d.py` relies on Qt WebEngine to host `gui/assets/3d_viewer/index.html`, a bundled three.js template (OrbitControls + GLTFLoader).
