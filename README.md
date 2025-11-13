@@ -24,10 +24,12 @@ pdfsuite audit in.pdf -o audit.json
 ```
 
 ## System deps
+
 See **docs/OPERATOR_GUIDE.md** and run `pdfsuite doctor` for per‑OS guidance.
 
 ## Philosophy
-Thin wrappers.  Predictable logs.  Composable pipelines.  Prefer stable, well‑maintained utilities.  Keep the door open to swap implementations.
+
+Thin wrappers. Predictable logs. Composable pipelines. Prefer stable, well‑maintained utilities. Keep the door open to swap implementations.
 
 ## Smoke tests
 

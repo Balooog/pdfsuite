@@ -1,8 +1,9 @@
 # Operator Guide
 
-Run `pdfsuite doctor` first.  It will report missing tools and suggest `apt`, `winget`, or `choco` commands. For deep command syntax see [`docs/CLI_REFERENCE`](CLI_REFERENCE/merge.md).
+Run `pdfsuite doctor` first. It will report missing tools and suggest `apt`, `winget`, or `choco` commands. For deep command syntax see [`docs/CLI_REFERENCE`](CLI_REFERENCE/merge.md).
 
 ## Common tasks
+
 - Merge: `pdfsuite merge A.pdf B.pdf -o merged.pdf`
 - Split: `pdfsuite split in.pdf --pages 1-3,7,10- -o parts/`
 - Reorder: `pdfsuite reorder in.pdf --order 5-7,1-4,8-z -o reordered.pdf`
@@ -17,10 +18,11 @@ Run `pdfsuite doctor` first.  It will report missing tools and suggest `apt`, `w
 - Audit: `pdfsuite audit doc.pdf -o audit.json`
 
 ## Pipelines
+
 - Scan inbox → OCR → optimize → linearize: `ocr -> optimize -> merge -> linearize`
 - Review with annotations; then sanitize: `okular/xournal++ -> flatten -> redact safe -> ocr -> validate`
 - Regression checks: `merge -> split -> reorder -> compare -> audit`
 
----
+______________________________________________________________________
 
 Related docs: [Documentation Index](DOCS_INDEX.md) · [Project Launch](PROJECT_LAUNCH.md) · [GUI Overview](GUI_OVERVIEW.md)

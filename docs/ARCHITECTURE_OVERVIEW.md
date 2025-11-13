@@ -3,6 +3,7 @@
 How pdfsuite components interact across CLI, GUI, and external toolchain.
 
 ## High-level diagram
+
 ```
 PySide6 GUI  ──(subprocess)──>  pdfsuite CLI (Typer)  ──>  External tools
       │                                 │                    (qpdf, pdfcpu,
@@ -12,6 +13,7 @@ PySide6 GUI  ──(subprocess)──>  pdfsuite CLI (Typer)  ──>  External 
 ```
 
 ## Components
+
 - **CLI (Typer):** Entry point + command modules under `pdfsuite/commands/` that shell out through shared helpers.
 - **Utilities:** `pdfsuite/utils/common.py` centralizes process execution, temp dirs, range parsing.
 - **GUI (planned):** PySide6 application calling CLI commands via background runner, streaming logs to panels.
@@ -22,16 +24,18 @@ PySide6 GUI  ──(subprocess)──>  pdfsuite CLI (Typer)  ──>  External 
   - Logs: CLI prints via Rich; GUI stores per-job logs for auditability.
 
 ## Job execution
+
 1. GUI or operator constructs command (e.g., merge range).
-2. CLI validates args, calls `require_tools`, and shells to tool.
-3. Tool writes to filesystem; CLI reports status code.
-4. GUI runner captures stdout/stderr and updates progress.
+1. CLI validates args, calls `require_tools`, and shells to tool.
+1. Tool writes to filesystem; CLI reports status code.
+1. GUI runner captures stdout/stderr and updates progress.
 
 ## Future evolution
+
 - Structured logging (JSON) for audits.
 - Shared queue definitions so CLI pipelines can be serialized for GUI.
 - Plugin hooks for additional external tools.
 
----
+______________________________________________________________________
 
 Related docs: [Documentation Index](DOCS_INDEX.md) · [Project Launch](PROJECT_LAUNCH.md) · [GUI Technical Plan](GUI_TECH.md)

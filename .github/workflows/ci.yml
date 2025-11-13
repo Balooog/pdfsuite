@@ -8,16 +8,22 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: |
-          python -m venv .venv
-          . .venv/bin/activate
-          pip install -e . black isort ruff
-      - run: . .venv/bin/activate && black --check . && isort --check-only . && ruff check .
-      - name: Doctor (non-blocking)
+      - name: Install tooling
         run: |
-          . .venv/bin/activate
-          python scripts/doctor.py || true
-  merge-cli:
+          python -m pip install --upgrade pip
+          pip install -e .[test] black isort ruff
+      - name: Format check
+        run: |
+          black --check .
+          isort --check-only .
+      - name: Ruff (non-blocking)
+        run: ruff check . || true
+      - name: Pytest + coverage
+        run: pytest
+      - name: Doctor (non-blocking)
+        run: python scripts/doctor.py || true
+
+  merge-cli-linux:
     runs-on: ubuntu-latest
     needs: lint-test
     steps:
@@ -29,12 +35,50 @@ jobs:
           python-version: '3.11'
       - name: Install pdfsuite
         run: |
-          python -m venv .venv
-          . .venv/bin/activate
+          python -m pip install --upgrade pip
           pip install -e .
       - name: Merge smoke test
         run: |
-          . .venv/bin/activate
           mkdir -p build
           pdfsuite merge tests/fixtures/sampleA.pdf tests/fixtures/sampleB.pdf -o build/ci-merged.pdf
           test -s build/ci-merged.pdf
+      - name: Split smoke test
+        run: |
+          mkdir -p build/split
+          pdfsuite split tests/fixtures/sample_multi.pdf --pages 1,2 -o build/split
+          test -s build/split/sample_multi_1.pdf
+          test -s build/split/sample_multi_2.pdf
+
+  merge-cli-windows:
+    runs-on: windows-latest
+    needs: lint-test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install qpdf
+        run: choco install qpdf --no-progress -y
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install pdfsuite
+        shell: pwsh
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+      - name: Merge smoke test
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path build | Out-Null
+          pdfsuite merge tests/fixtures/sampleA.pdf tests/fixtures/sampleB.pdf -o build/ci-merged.pdf
+          if (-not (Test-Path build/ci-merged.pdf)) { exit 1 }
+          if ((Get-Item build/ci-merged.pdf).Length -eq 0) { exit 1 }
+      - name: Split smoke test
+        shell: pwsh
+        run: |
+          $split = Join-Path build split
+          New-Item -ItemType Directory -Force -Path $split | Out-Null
+          pdfsuite split tests/fixtures/sample_multi.pdf --pages 1,2 -o $split
+          $first = Join-Path $split 'sample_multi_1.pdf'
+          $second = Join-Path $split 'sample_multi_2.pdf'
+          if (-not (Test-Path $first)) { exit 1 }
+          if (-not (Test-Path $second)) { exit 1 }
+          if ((Get-Item $first).Length -eq 0 -or (Get-Item $second).Length -eq 0) { exit 1 }

@@ -3,6 +3,7 @@
 ASCII sketches of the primary screens to anchor early design discussions. Real implementation will use PySide6 widgets, but these wireframes illustrate layout and hierarchy.
 
 ## 1. Dashboard
+
 ```
 +--------------------------------------------------------------------------------+
 | PDFSUITE ▸ Dashboard     [Open File] [Run Queue ▼]                 [Doctor ✅] |
@@ -23,6 +24,7 @@ ASCII sketches of the primary screens to anchor early design discussions. Real i
 ```
 
 ## 2. Pages Panel (Merge/Split/Reorder)
+
 ```
 +--------------------------------------------------------------------------------+
 | PDFSUITE ▸ Pages            [Add PDFs] [Export Selected]             [Doctor ✅]|
@@ -43,6 +45,7 @@ ASCII sketches of the primary screens to anchor early design discussions. Real i
 ```
 
 ## 3. Sign & Verify
+
 ```
 +--------------------------------------------------------------------------------+
 | PDFSUITE ▸ Sign & Verify        [Open PDF] [Save As]               [Doctor ⚠️] |
@@ -60,6 +63,7 @@ ASCII sketches of the primary screens to anchor early design discussions. Real i
 ```
 
 ## 4. Compare
+
 ```
 +--------------------------------------------------------------------------------+
 | PDFSUITE ▸ Compare              [Open A] [Open B]                [Doctor ✅]  |
@@ -78,6 +82,7 @@ ASCII sketches of the primary screens to anchor early design discussions. Real i
 ```
 
 ## 5. Settings
+
 ```
 +--------------------------------------------------------------------------------+
 | PDFSUITE ▸ Settings                                              [Doctor ✅]   |
@@ -93,10 +98,11 @@ ASCII sketches of the primary screens to anchor early design discussions. Real i
 ```
 
 ## Next steps
-1. Translate these ASCII layouts into PySide6 UI classes (one per panel) with placeholder widgets so navigation can be exercised early.
-2. Capture screenshot wireframes (Figma/Qt Designer) to replace the ASCII sketches once components stabilize.
-3. Keep wireframes synced with actual functionality: update this document whenever panels gain new controls or workflows shift.
 
----
+1. Translate these ASCII layouts into PySide6 UI classes (one per panel) with placeholder widgets so navigation can be exercised early.
+1. Capture screenshot wireframes (Figma/Qt Designer) to replace the ASCII sketches once components stabilize.
+1. Keep wireframes synced with actual functionality: update this document whenever panels gain new controls or workflows shift.
+
+______________________________________________________________________
 
 Related docs: [Documentation Index](DOCS_INDEX.md) · [GUI Overview](GUI_OVERVIEW.md) · [GUI Technical Plan](GUI_TECH.md)

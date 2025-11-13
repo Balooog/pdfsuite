@@ -38,7 +38,7 @@ nav:
       - Project Launch: PROJECT_LAUNCH.md
       - Roadmap: ROADMAP.md
       - Reference:
-          - CLI Reference: 
+          - CLI Reference:
               - Merge: CLI_REFERENCE/merge.md
               - Split: CLI_REFERENCE/split.md
               - Reorder: CLI_REFERENCE/reorder.md

@@ -91,6 +91,8 @@ def parse_fonts(text: str) -> List[Dict[str, str]]:
         tokens = line.split()
         if len(tokens) < 3:
             continue
+        if tokens[0].startswith("-"):
+            continue
         name = tokens[0]
         embedded = tokens[2].lower() == "yes"
         fonts.append({"name": name, "embedded": embedded})
